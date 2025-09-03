@@ -112,6 +112,11 @@ body {
 .nav-pills .nav-link {
 	color: #000
 }
+.gallery .nav-pills .nav-link,
+.gallery img.gallery-item,
+.mg-prev, .mg-next {
+  cursor: pointer;
+}
 .item-column {
 	position: relative;
 	margin-bottom: 0 !important;
@@ -247,6 +252,89 @@ form textarea {
 input[type="submit"] {
 	background-color: #BEB45A;
 	padding: .5em 1em
+}
+
+/* Subtle hover/active feedback (respects reduced motion) */
+@media (prefers-reduced-motion: no-preference) {
+  .gallery .nav-pills .nav-link,
+  .gallery img.gallery-item {
+    transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
+  }
+  .gallery img.gallery-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,.15);
+  }
+  .gallery img.gallery-item:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 10px rgba(0,0,0,.12);
+    opacity: 0.95; /* tactile ‘press’ effect */
+  }
+  .gallery .nav-pills .nav-link:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,.12);
+  }
+  .gallery .nav-pills .nav-link:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0,0,0,.10);
+  }
+}
+
+/* Make the modal a predictable, centered viewport for the image */
+.mg-modal .modal-dialog {
+  max-width: 92vw;         /* wide on desktop, adaptive */
+  margin: 1.75rem auto;    /* centered */
+}
+
+.mg-modal .modal-content {
+  background: #000;        /* black backdrop looks cleaner for photos */
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.mg-modal .modal-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* define a consistent viewport for images */
+  width: 92vw;
+  max-width: 1200px;
+  height: 80vh;            /* uniform height for every image */
+  padding: 0;
+  margin: 0 auto;
+}
+
+/* The magic: contain every photo within the same box */
+.mg-modal .lightboxImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;      /* preserves aspect ratio, fits inside the box */
+  object-position: center;
+  display: block;
+}
+
+/* Keep prev/next arrows above the image */
+.mg-modal .mg-prev,
+.mg-modal .mg-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  cursor: pointer;
+  background: rgba(0,0,0,.35);
+  border-radius: 999px;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+}
+
+.mg-modal .mg-prev { left: 12px; }
+.mg-modal .mg-next { right: 12px; }
+
+.mg-modal .mg-prev:hover,
+.mg-modal .mg-next:hover {
+  background: rgba(0,0,0,.55);
 }
 
 @media all and (max-width: 1180px) {
